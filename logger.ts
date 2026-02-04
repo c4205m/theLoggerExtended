@@ -106,7 +106,7 @@ export class Logger {
                 } else {
                     for (const i in log.log) {
                         const property = this.callProperties(
-                            String(log.log[i]),
+                            log.log[i],
                             methodConstructions
                         );
                         const formatted = `${noteFormatted}${i} - ${property}`;
