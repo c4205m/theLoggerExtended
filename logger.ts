@@ -67,7 +67,7 @@ export class Logger {
             : null;
 
         const stackFormatted = this.settings.showStack
-            ? " ➜\n" + this.filterStack(log.callstack)
+            ? " ➜ Trace\n" + this.filterStack(log.callstack)
             : "";
 
         log.note = log.note.replace(
@@ -81,10 +81,10 @@ export class Logger {
         switch (this.settings.printMode) {
             case PrintModes.DEFAULT:
                 const property = this.callProperties(
-                    String(log.log),
+                    log.log,
                     methodConstructions
                 );
-                const formatted = `${noteFormatted}${property}${stackFormatted}`;
+                const formatted = `${noteFormatted}${property}${stackFormatted.replace(" Trace", "")}`;
                 this.print(formatted);
                 break;
             case PrintModes.PROPS:
@@ -94,13 +94,14 @@ export class Logger {
                     typeof log.log === "string" ||
                     typeof log.log === "number" ||
                     typeof log.log === "boolean" ||
+                    typeof log.log === "function" ||
                     log.log === undefined
                 ){
                     const property = this.callProperties(
-                        String(log.log),
+                        log.log,
                         methodConstructions
                     );
-                    const formatted = `${noteFormatted}${property}${stackFormatted}`;
+                    const formatted = `${noteFormatted}${property}`;
                     this.print(formatted);
                 } else {
                     for (const i in log.log) {
@@ -120,13 +121,14 @@ export class Logger {
                     typeof log.log === "string" ||
                     typeof log.log === "number" ||
                     typeof log.log === "boolean" ||
+                    typeof log.log === "function" ||
                     log.log === undefined
                 ){
                     const property = this.callProperties(
-                        String(log.log),
+                        log.log,
                         methodConstructions
                     );
-                    const formatted = `${noteFormatted}${property}${stackFormatted}`;
+                    const formatted = `${noteFormatted}${property}`;
                     this.print(formatted);
                 } else {
                     this.inspectRecursive(log.log, 0, new Set());

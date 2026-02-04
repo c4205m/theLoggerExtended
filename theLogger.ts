@@ -31,12 +31,12 @@
 //         ]
 
 //         type sarcasmDegree = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-//         type style = 0 | 1 | 2 | 3 ;
+//         type tableStyle = 0 | 1 | 2 ;
 
 //         function print(printLog: any, options?: loggerOptions): void;
 //         function printDelimeter(title?: string, size?: number, repeat?: number, gap?: number): void;
 //         function printAsk(question: string, sarcasm?: sarcasmDegree): void;
-//         function printAsTable(tableArr: Array<Array<any>>, padding?: number, colSpanArr?: Array<Array<number>>, style?: style): void;
+//         function printAsTable(tableArr: Array<Array<any>>, padding?: number, colSpanArr?: Array<Array<number>>, style?: tableStyle): void;
 //         function TODO(objective: string, subject?: string): void;
 //         function whatTODO(subject?: string): void;
 //         function printProcess(label: string, value: number, options?:ProcessLogOptions, log?: boolean): string;
@@ -79,6 +79,15 @@
 //     @input
 //     readonly printGroups: Array<string>;
 
+//     @input
+//     @label("Show whatTODO")
+//     readonly showWhatTodo: boolean;
+    
+//     @input
+//     @label("TODO Subject")
+//     @showIf("showWhatTodo")
+//     readonly todoSubject: string;
+
 //     private camera: Camera;
 //     private text: Text;
 //     private transform: ScreenTransform;
@@ -107,7 +116,7 @@
 
 //         // Inject logger to original print()
 //         globalThis.print = (...args: any[]) => {this.theLogger.apply(this, args)};
-//         // globalThis.printAsk = (question: string, sarcasm: number = 10) => this.apiRequest(question, sarcasm).then((x)=>print(JSON.parse(x.body).choices[0].message.content));
+//         globalThis.printAsk = (question: string, sarcasm: number = 10) => this.apiRequest(question, sarcasm).then((x)=>print(JSON.parse(x.body).choices[0].message.content));
 //         globalThis.printAsTable = (tableArr: Array<Array<any>>, padding: number = 0, colSpanArr: Array<Array<number>> = [], style: number = 0) => {
 //             const table = new daTable(tableArr, colSpanArr, style);
 //             table.padding = padding;
@@ -116,6 +125,8 @@
 
 //         globalThis.TODO = this.todo.TODO.bind(this.todo);
 //         globalThis.whatTODO = this.todo.whatTODO.bind(this.todo);
+
+//         if(this.showWhatTodo) whatTODO(this.todoSubject);
 
 //         globalThis.printDelimeter = (title = "", size = 100, repeat = 1, gap = 0) => {
 //             print(this.insertString("━".repeat(size), title, repeat, gap));
@@ -176,7 +187,16 @@
 
 //         text.text = "";
 //         logs = logs.slice(-500);
-//         if (visible) text.text += "\n>>>\t" + logs.join("\n>>>\t");
+//         logs = logs.map((x) => (
+//             x.startsWith("┏")
+//             ? ">>>\t┏━━━━━━TODO━━━━━━ ━━ ━"
+//             : x.startsWith("┃━")
+//             ? ">>>\t" + "┃━━━━━━" + x.replace("┃", "").replaceAll("━", "").trim()
+//             : x.startsWith("┗") 
+//             ? ">>>\t┗━━━━━━━━━━━━━━━━ ━━ ━"
+//             : ">>>\t" + x
+//         ));
+//         if (visible) text.text += logs.join("\n");
 
 //         transform.anchors.setCenter(v);
 //         interaction.isFilteredByDepth = false;
@@ -312,37 +332,37 @@
 //         this.update = this.createEvent("UpdateEvent");
 //     }
 
-//     // private async apiRequest(err: string, sarcasm: number = 10){
-//     //     const req = RemoteApiRequest.create();
-//     //     req.endpoint = "completions";
-//     //     req.body = JSON.stringify({
-//     //         messages: [
-//     //             {
-//     //                 role: "developer",
-//     //                 content: `Answer the user's questions about Lens Studio and its api or Javascript and Typescript languages in general. 
-//     //                 Question may consist of code blocks or error messages only. 
-//     //                 Be sarcastic, non-apolegetic and mean but also show possible solutions. 
-//     //                 Your sarcasm level is ${sarcasm} out of 10. 
-//     //                 Don't mention magic.
-//     //                 Don't start wih 'Oh', and 'Wow'.`,
-//     //             },
-//     //             {
-//     //                 role: "user",
-//     //                 content: `${err}`,
-//     //             },
-//     //         ],
-//     //     });
+//     private async apiRequest(err: string, sarcasm: number = 10){
+//         const req = RemoteApiRequest.create();
+//         req.endpoint = "completions";
+//         req.body = JSON.stringify({
+//             messages: [
+//                 {
+//                     role: "developer",
+//                     content: `Answer the user's questions about Lens Studio and its api or Javascript and Typescript languages in general. 
+//                     Question may consist of code blocks or error messages only. 
+//                     Be sarcastic, non-apolegetic and mean but also show possible solutions. 
+//                     Your sarcasm level is ${sarcasm} out of 10. 
+//                     Don't mention magic.
+//                     Don't start wih 'Oh', and 'Wow'.`,
+//                 },
+//                 {
+//                     role: "user",
+//                     content: `${err}`,
+//                 },
+//             ],
+//         });
 
-//     //     // const response: Record<string, any> = await new Promise((resolve) => {
-//     //     //     this.chatGpt.performApiRequest(req, resolve)
-//     //     // });
+//         // const response: Record<string, any> = await new Promise((resolve) => {
+//         //     this.chatGpt.performApiRequest(req, resolve)
+//         // });
 
-//     //     return {
-//     //         statusCode: response.statusCode,
-//     //         metadata: response.metadata,
-//     //         body: response.body
-//     //     };
-//     // }
+//         return {
+//             statusCode: response.statusCode,
+//             metadata: response.metadata,
+//             body: response.body
+//         };
+//     }
 
 //     private createSceneComponent(
 //         root: SceneObject, 

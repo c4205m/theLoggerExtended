@@ -4,12 +4,18 @@ export class Todo {
 
     constructor(private self: BaseScriptComponent){}
 
-    public TODO(objective: string, subject: string = "GENERAL") {
+    public TODO(objective: string, subject: string = "ALL") {
         if (!this.todoLists[subject]) {
             this.todoLists[subject] = [];
         }
-        
-        this.todoLists[subject].push({objective: objective, stack: "on " + this.fileName()});
+        const item = {objective: objective, stack: "on " + this.fileName()};
+
+        if (
+            this.todoLists[subject].map((x) => x.objective).includes(item.objective) &&
+            this.todoLists[subject].map((x) => x.stack).includes(item.stack)
+        ) return;
+
+        this.todoLists[subject].push(item);
     }
 
     public whatTODO(subject?: string) {
@@ -20,7 +26,7 @@ export class Todo {
             if (subject) {
                 print(this.insertString("┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ━━ ━", subject, 1, .2));
                 print("┃");
-                for(const x of this.todoLists[subject]){
+                for(const x of this.todoLists[subject] ?? []){
                     print("┃  𝇈 " + x.objective + " " + x.stack);
                 }
                 print("┃");

@@ -15,9 +15,9 @@ This extends the print() function of LS. You can log to your console and screen,
 -   **Stack Traces**: Optional call stack information
     
 -   **Interactive Screen Logging**: Visual logging overlay in Lens Preview
-        - Swipe left to hide log panel
-        - Tap nudge to show
-	    - Scroll through logs
+    - Scroll through logs
+    - Swipe left to hide log panel
+    - Tap nudge to show again
 	   
 -   **Method Chaining**:
 	```js
