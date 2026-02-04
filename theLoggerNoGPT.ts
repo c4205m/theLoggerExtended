@@ -50,7 +50,7 @@ declare global {
 }
 
 @component
-export class theLogger extends BaseScriptComponent{
+export class theLoggerNoGpt extends BaseScriptComponent{
     
     @input
     readonly transparentMaterial: Material;
@@ -190,6 +190,8 @@ export class theLogger extends BaseScriptComponent{
             ? ">>>\t┏━━━━━━TODO━━━━━━ ━━ ━"
             : x.startsWith("┃━")
             ? ">>>\t" + "┃━━━━━━" + x.replace("┃", "").replaceAll("━", "").trim()
+            : x.startsWith("━") 
+            ? ">>>\t" + "━━━━━━" + x.replaceAll("━", "").trim() + "━━━━━━"
             : x.startsWith("┗") 
             ? ">>>\t┗━━━━━━━━━━━━━━━━ ━━ ━"
             : ">>>\t" + x

@@ -192,6 +192,8 @@ export class theLogger extends BaseScriptComponent{
             ? ">>>\t┏━━━━━━TODO━━━━━━ ━━ ━"
             : x.startsWith("┃━")
             ? ">>>\t" + "┃━━━━━━" + x.replace("┃", "").replaceAll("━", "").trim()
+            : x.startsWith("━") 
+            ? ">>>\t" + "━━━━━━" + x.replaceAll("━", "").trim() + "━━━━━━"
             : x.startsWith("┗") 
             ? ">>>\t┗━━━━━━━━━━━━━━━━ ━━ ━"
             : ">>>\t" + x
@@ -410,4 +412,5 @@ export class theLogger extends BaseScriptComponent{
 
         return result;
     }
+
 }
