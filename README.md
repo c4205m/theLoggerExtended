@@ -297,7 +297,7 @@ type DebugRule<T> = {
 };
 ```
 
-**Print Debug**
+**Print Graph**
 ```ts
 
 const upddateEvent: SceneEvent = this.createEvent("UpdateEvent");
