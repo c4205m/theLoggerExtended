@@ -2,6 +2,7 @@ import { LogArguments, Settings, PrintModes, Logger } from "./logger";
 import { daTable } from "./daTable";
 import { Todo } from "./todo";
 import { ProcessLogger, ProgressSet, StickyDebug } from "./processLogger";
+import { Oscilloscope } from "./Oscilloscope";
 
 interface loggerOptions {
     printNote?: string;
@@ -33,6 +34,8 @@ declare global {
         type sarcasmDegree = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
         type tableStyle = 0 | 1 | 2 ;
 
+        type printNoteMarker = "~source" | "~groupIds" | "~properties";
+
         function print(printLog: any, options?: loggerOptions): void;
         function printDelimeter(title?: string, size?: number, repeat?: number, gap?: number): void;
         function printAsk(question: string, sarcasm?: sarcasmDegree): void;
@@ -42,6 +45,7 @@ declare global {
         function printProcess(label: string, value: number, options?:ProcessLogOptions, log?: boolean): string;
         function printProcessSet(value: Array<ProgressSet>, barLength?: number, log?: boolean): string;
         function printProcessRecord(value: Record<string, number>, options?:ProcessLogOptions, log?: boolean): string;
+        function printGraph(value: number);
 
         var PulseDebug: typeof StickyDebug;
     }
@@ -52,6 +56,9 @@ export class theLogger extends BaseScriptComponent{
     
     @input
     readonly transparentMaterial: Material;
+    
+    @input
+    readonly oscilloscopeMaterial: Material;
     
     @input
     readonly chatGpt: RemoteServiceModule;
@@ -98,6 +105,9 @@ export class theLogger extends BaseScriptComponent{
     private logger: Logger = null;
     private todo: Todo = null;
 
+    private oscilloscope: Oscilloscope;
+    private isOscilloscopeSetup: boolean = false;
+
     onAwake() {
         if(this.logToScreen) this.setupScreenLogger();
 
@@ -113,6 +123,8 @@ export class theLogger extends BaseScriptComponent{
         // Instantiate logger
         this.logger = new Logger(loggerSettings);
         this.todo = new Todo(this);
+        
+        this.oscilloscope = new Oscilloscope(this.oscilloscopeMaterial);
 
         // Inject logger to original print()
         globalThis.print = (...args: any[]) => {this.theLogger.apply(this, args)};
@@ -146,6 +158,13 @@ export class theLogger extends BaseScriptComponent{
             const out = ProcessLogger.drawProgressRecord(value, min, max, barLength);
             if(log) print(out);
             return out;
+        }
+
+        globalThis.printGraph = (value: number) => {
+            if(!this.isOscilloscopeSetup && value) {
+                this.setupOscilloscope();
+            }
+            this.oscilloscope.value = value;
         }
 
         globalThis.PulseDebug = StickyDebug;
@@ -268,6 +287,40 @@ export class theLogger extends BaseScriptComponent{
             transform.anchors.setCenter(v);
         });
     };
+
+    private setupOscilloscope(){
+        const camera = this.createSceneComponent(this.sceneObject, "_oscilloscopeCamera", [
+            "Camera",
+        ]);
+        const safeFrame = this.createSceneComponent(camera.Object, "_safe", [
+            "ScreenTransform",
+            "ScreenRegionComponent",
+        ]);
+        const image = this.createSceneComponent(safeFrame.Object, "_image", [
+            "ScreenTransform", 
+            "Image", 
+        ]);
+
+        safeFrame.ScreenRegionComponent.region = ScreenRegionType.SafeRender;
+        const layer = LayerSet.makeUnique();
+
+        camera.Object.layer = layer;
+        safeFrame.Object.layer = layer;
+        image.Object.layer = layer;
+
+        camera.Camera.type = Camera.Type.Orthographic;
+        camera.Camera.renderLayer = layer;
+        camera.Camera.renderTarget = global.scene.liveTarget;
+        camera.Camera.renderOrder = 200;
+
+        image.Image.stretchMode = StretchMode.Fit;
+        image.Image.mainMaterial = this.oscilloscopeMaterial;
+
+        image.ScreenTransform.anchors.setSize(new vec2(.75, .75));
+        image.ScreenTransform.anchors.setCenter(new vec2(-0.6, 0.5));
+
+        this.isOscilloscopeSetup = true;
+    }
 
     private setupScreenLogger(){
         // Setup scene

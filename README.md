@@ -1,7 +1,7 @@
 # theLogger for Lens Studio
 <img src="https://images.ctfassets.net/ub38vssza5h3/7FynBv68WKAHYYAe7XQhlk/dfa0ebd5e13c3bdd5b0f34345e65170f/LS.png" width="100" height="100" alt="Lens Studio">
 
-This extends the print() function of LS. You can log to your console and screen, ask questions to ChatGPT, make TODO lists, draw tables from arrays.
+This extends the print() function of LS. You can log to your console and screen, ask questions to ChatGPT, make TODO lists, draw tables from arrays, print value graphs to screen.
 
 ## Features
 -   **Multiple Print Modes**:
@@ -21,6 +21,7 @@ This extends the print() function of LS. You can log to your console and screen,
 	   
 -   **Method Chaining**:
 	```js
+  
 	print(obstacles, { objectProperties: "position.normalize()" });
     // prints every obstacles normalized position
 	```
@@ -51,6 +52,7 @@ PS. The theLogger is written in TypeScript and implemented globally, enhancing a
 
 ## Usage Examples
 ```javascript
+
 //Basic log
 print("Game started");
 
@@ -63,6 +65,7 @@ print(gameObject, {
 ```
 **With Arguments**
 ```js
+
 //With print note:
 print("Game started", {printNote:"Note"})
 print("Game started", {printNote:"~source"})
@@ -76,6 +79,7 @@ print("Game started", {printNote:"~properties", objectProperties: "replace('Game
 ```
 **Search Properties**
 ```javascript
+
 print(obstacles);
 //Output:
 //	0 - [object object]
@@ -95,6 +99,7 @@ print(obstacles, {
 ```
 **Recursive Search:**
 ```js
+
 print(obstacles);
 //Output:
 //	0 - {
@@ -118,6 +123,7 @@ print(obstacles);
 ```
 **Ask ChatGPT**
 ```javascript
+
 printAsk("How do i do that?"); //With maximum bully, why not 
 
 printAsk("How do i do that?", 0); //no mean comments
@@ -133,6 +139,7 @@ try{
 
 **TODO Function**
 ```javascript
+
 TODO("Identify and handle the potential null reference in the class"); // Adds to TODO list
 TODO("Implement the merge sort algorithm", "SORTING"); // Adds to TODO list with subject
 whatTODO() // Prints TODO list
@@ -156,37 +163,37 @@ TODO("Develop a custom exception class for handling specific errors"); // This w
 **Print Table**
 ```javascript
 
-    const mythicalCreatureTable = [
-        ["Creature", "Origin", "Abilities", "Favorite Food", "Strength Level"],
-        ["Dragon", "Various Cultures", "Fire breathing, Flight", "Goats", 10],
-        ["Unicorn", "European Folklore", "Healing, Purity", "Rainbows", 8],
-        ["Chimera", "Greek Mythology", "Fire breathing, Regeneration", "Anything", 9],
-        ["Mermaid", "Various Cultures", "Swimming, Hypnosis", "Shellfish", 7],
-        ["Bigfoot", "North American Folklore", "Stealth, Strength", "Berries", 6]
-    ];
+const mythicalCreatureTable = [
+    ["Creature", "Origin", "Abilities", "Favorite Food", "Strength Level"],
+    ["Dragon", "Various Cultures", "Fire breathing, Flight", "Goats", 10],
+    ["Unicorn", "European Folklore", "Healing, Purity", "Rainbows", 8],
+    ["Chimera", "Greek Mythology", "Fire breathing, Regeneration", "Anything", 9],
+    ["Mermaid", "Various Cultures", "Swimming, Hypnosis", "Shellfish", 7],
+    ["Bigfoot", "North American Folklore", "Stealth, Strength", "Berries", 6]
+];
 
-    printAsTable(mythicalCreatureTable, 5) // prints table with auto-span with padding of 5
-    
-    //Output:
-    // ┌─────────────┐────────────────────────────┐─────────────────────────────────┐──────────────────┐───────────────────┐
-    // │  Creature   │           Origin           │            Abilities            │  Favorite Food   │  Strength Level   │
-    // ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
-    // │   Dragon    │      Various Cultures      │     Fire breathing, Flight      │      Goats       │        10         │
-    // ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
-    // │   Unicorn   │     European Folklore      │         Healing, Purity         │     Rainbows     │         8         │
-    // ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
-    // │   Chimera   │      Greek Mythology       │  Fire breathing, Regeneration   │     Anything     │         9         │
-    // ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
-    // │   Mermaid   │      Various Cultures      │       Swimming, Hypnosis        │    Shellfish     │         7         │
-    // ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
-    // │   Bigfoot   │  North American Folklore   │        Stealth, Strength        │     Berries      │         6         │
-    // └─────────────┘────────────────────────────┘─────────────────────────────────┘──────────────────┘───────────────────┘
+printAsTable(mythicalCreatureTable, 5) // prints table with auto-span with padding of 5
 
-    // You can initialize a different array with the same size for the column dimensions of each column
-    printAsTable(mythicalCreatureTable, 1, colSpans)
+//Output:
+// ┌─────────────┐────────────────────────────┐─────────────────────────────────┐──────────────────┐───────────────────┐
+// │  Creature   │           Origin           │            Abilities            │  Favorite Food   │  Strength Level   │
+// ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
+// │   Dragon    │      Various Cultures      │     Fire breathing, Flight      │      Goats       │        10         │
+// ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
+// │   Unicorn   │     European Folklore      │         Healing, Purity         │     Rainbows     │         8         │
+// ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
+// │   Chimera   │      Greek Mythology       │  Fire breathing, Regeneration   │     Anything     │         9         │
+// ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
+// │   Mermaid   │      Various Cultures      │       Swimming, Hypnosis        │    Shellfish     │         7         │
+// ├─────────────┼────────────────────────────┼─────────────────────────────────┼──────────────────┼───────────────────┤
+// │   Bigfoot   │  North American Folklore   │        Stealth, Strength        │     Berries      │         6         │
+// └─────────────┘────────────────────────────┘─────────────────────────────────┘──────────────────┘───────────────────┘
 
-    // You can also change table style
-    printAsTable(mythicalCreatureTable, 1, colSpans, 2)
+// You can initialize a different array with the same size for the column dimensions of each column
+printAsTable(mythicalCreatureTable, 1, colSpans)
+
+// You can also change table style
+printAsTable(mythicalCreatureTable, 1, colSpans, 2)
 ```
 
 **ProcessLogger**
@@ -195,12 +202,14 @@ This can display single values, multiple labeled values, or entire records as fi
 
 Example usage:
 ```ts
+
 printProcess("Health", 0.7);
 printProcessRecord({ Mana: 0.3, Stamina: 0.9 });
 printProcessSet([["Ammo", 10, 0, 20], ["SecondaryAmmo", 20, 0, 20]]);
 ```
 
 ```ts
+
 // Progress set array
 export type ProgressSet = [
     label: string,
@@ -223,6 +232,7 @@ It lets you describe:
 Instead of constantly printing raw values every frame, `PulseDebug` keeps the *last meaningful state* on screen until it expires or is replaced by something more important.
 
 ```ts
+
 //DEFINE YOUR DEBUG INPUT TYPE
 type PlayerDebug = {
   isShooting: boolean;
@@ -275,6 +285,7 @@ this.createEvent("UpdateEvent").binc(()=>{
 })
 ```
 ```ts
+
 // Register rule structure
 type DebugRule<T> = {
     
@@ -285,5 +296,15 @@ type DebugRule<T> = {
   expireMs?: number;
 };
 ```
+
+**Print Debug**
+```ts
+
+const upddateEvent: SceneEvent = this.createEvent("UpdateEvent");
+upddateEvent.bind(() => {
+    printGraph(Math.sin(getTime())); //print sine graph on corner of screen
+})
+```
+
 ---
 <p>*<a href="https://github.com/c42m05/the-Logger">theLogger</a> by <a href="https://c42m05.github.io/">c4205M</a> is licensed under <a href="https://github.com/c4205m/the-Logger/blob/main/LICENSE">GNU GENERAL PUBLIC LICENSE</a>.</p>
