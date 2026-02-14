@@ -3,6 +3,8 @@
 
 This extends the print() function of LS. You can log to your console and screen, ask questions to ChatGPT, make TODO lists, draw tables from arrays, print value graphs to screen.
 
+[theLoggerExtended @c4205M](https://github.com/c4205m/theLoggerExtended)
+
 ## Features
 -   **Multiple Print Modes**:
     -   `No Log`: Suppress all output
@@ -307,4 +309,4 @@ upddateEvent.bind(() => {
 ```
 
 ---
-<p>*<a href="https://github.com/c42m05/the-Logger">theLogger</a> by <a href="https://c42m05.github.io/">c4205M</a> is licensed under <a href="https://github.com/c4205m/the-Logger/blob/main/LICENSE">GNU GENERAL PUBLIC LICENSE</a>.</p>
+<p>*<a href="https://github.com/c42m05/theLoggerExtended">theLogger</a> by <a href="https://c42m05.github.io/Portfolio">c4205M</a> is licensed under <a href="https://github.com/c4205m/the-Logger/blob/main/LICENSE">GNU GENERAL PUBLIC LICENSE</a>.</p>
